@@ -23,9 +23,9 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class RobotMap {
 
-    public static final int leftForwardMotor = 1;
+    public static final int leftForwardMotor = 12;
     public static final int leftBackMotor = 7;
-    public static final int rightForwardMotor = 12;
+    public static final int rightForwardMotor = 1;
     public static final int rightBackMotor = 8;
 
     public static CANJaguar leftFront;

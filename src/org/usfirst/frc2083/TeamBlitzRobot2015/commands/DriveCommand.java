@@ -52,14 +52,15 @@ public class DriveCommand extends CommandBase {
         } else {
             X = xbox.getX();
             System.out.println("X = " + X);
-            Y = -xbox.getZ(); //-xbox.getRawAxis(5);
+            Y = -xbox.getY(); //-xbox.getRawAxis(5);
             System.out.println("Y = " + Y);
             if (Math.abs(X) < 0.1) X = 0;
             if (Math.abs(Y) < 0.1) Y = 0;
             X = X*Math.abs(X);
             Y = Y*Math.abs(Y);
         }
-        leftDrive.setSetpoint(Y*360+X*240);       //NEGATE
+        
+        leftDrive.setSetpoint(Y*360+X*240);
         rightDrive.setSetpoint(Y*360-X*240);
     }
 

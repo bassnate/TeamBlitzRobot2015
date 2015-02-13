@@ -55,28 +55,20 @@ public class Robot extends IterativeRobot {
         RobotMap.rightFront.configNeutralMode(CANJaguar.NeutralMode.Brake);
         RobotMap.rightBack.configNeutralMode(CANJaguar.NeutralMode.Brake);
         
-//            RobotMap.upperClaw = new CANJaguar(RobotMap.upperClawMotor, ControlMode.Voltage);
-//            RobotMap.upperClaw.configNeutralMode(CANJaguar.NeutralMode.Brake);
-//            RobotMap.upperClaw.setX(0);
-//            RobotMap.lowerClaw = new CANJaguar(RobotMap.lowerClawMotor, ControlMode.Voltage);
-//            RobotMap.lowerClaw.configNeutralMode(CANJaguar.NeutralMode.Brake);
-//            RobotMap.lowerClaw.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-//            RobotMap.lowerClaw.configEncoderCodesPerRev(360);
-//            RobotMap.lowerClaw.setX(0);
-//            RobotMap.lowerClaw.enableControl();
-
-        RobotMap.leftFront.setSpeedMode(CANJaguar.kQuadEncoder, 360, 0.01, 0, 0);
-        RobotMap.rightFront.setSpeedMode(CANJaguar.kQuadEncoder, 250, 0.01, 0, 0);
-        RobotMap.leftFront.setPositionMode(CANJaguar.kQuadEncoder, 360, 0.01, 0, 0);
-        RobotMap.rightFront.setPositionMode(CANJaguar.kQuadEncoder, 250, 0.01, 0, 0);
+        RobotMap.rightBack.setVoltageMode();
+        RobotMap.leftBack.setVoltageMode();
+        
+        RobotMap.leftFront.setVoltageMode(CANJaguar.kQuadEncoder, 360);
+        RobotMap.rightFront.setVoltageMode(CANJaguar.kQuadEncoder, 250);
+        
+//        RobotMap.leftFront.setPositionMode(CANJaguar.kQuadEncoder, 360, 0.01, 0, 0);
+//        RobotMap.rightFront.setPositionMode(CANJaguar.kQuadEncoder, 250, 0.01, 0, 0);
+        
 //        RobotMap.leftFront.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
 //        RobotMap.rightFront.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
 //        RobotMap.leftFront.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
 //        RobotMap.rightFront.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
-        
-        RobotMap.leftFront.configEncoderCodesPerRev(360);
-        RobotMap.rightFront.configEncoderCodesPerRev(250);
-        
+                
 //            RobotMap.compressorRelay = new Relay(1);
 //            RobotMap.compressorRelay.setDirection(Relay.Direction.kForward);
 //            RobotMap.solenoidRelay = new Relay(2);
