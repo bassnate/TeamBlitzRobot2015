@@ -43,9 +43,8 @@ public class LeftDriveSubsystem extends PIDSubsystem {
 
     public void usePIDOutput(double d) {
         System.out.println("Left " + getSetpoint() + " " + returnPIDInput() + " " + d + " " + leftFront.getOutputCurrent() + " " + leftBack.getOutputCurrent());
-// FIXME Find replacement methods.
-//        leftBack.setX(-d);
-//        leftFront.setX(-d);
+        leftBack.set(-d);
+        leftFront.set(-d);
     }
     
 }

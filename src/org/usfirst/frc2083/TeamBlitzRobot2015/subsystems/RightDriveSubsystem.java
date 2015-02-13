@@ -17,13 +17,16 @@ import org.usfirst.frc2083.TeamBlitzRobot2015.RobotMap;
  */
 public class RightDriveSubsystem extends PIDSubsystem {
     
-    public CANJaguar rightFront = RobotMap.rightFront;
-    public CANJaguar rightBack = RobotMap.rightBack;
+    public CANJaguar rightFront;
+    public CANJaguar rightBack;
     
     public RightDriveSubsystem() {
         super("Right Drive",0.00,0.0,0,0.030);
+        this.rightFront = RobotMap.rightFront;
+        this.rightBack = RobotMap.rightBack;
         this.enable();
         this.getPIDController().setOutputRange(-12, 12);
+        
     }
 
     protected void initDefaultCommand() {
@@ -44,9 +47,8 @@ public class RightDriveSubsystem extends PIDSubsystem {
 
     public void usePIDOutput(double d) {
         System.out.println("Right " + getSetpoint() + " " + returnPIDInput() + " " + d + " " + rightFront.getOutputCurrent() + " " + rightBack.getOutputCurrent());
-// FIXME Find replacement methods.
-//        rightFront.setX(d);
-//        rightBack.setX(d);
+        rightFront.set(d);
+        rightBack.set(d);
     }
     
 }
