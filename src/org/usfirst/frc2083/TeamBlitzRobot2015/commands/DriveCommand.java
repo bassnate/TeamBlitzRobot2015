@@ -3,6 +3,7 @@ package org.usfirst.frc2083.TeamBlitzRobot2015.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
+
 import org.usfirst.frc2083.TeamBlitzRobot2015.RobotMap;
 
 /**
@@ -50,7 +51,9 @@ public class DriveCommand extends CommandBase {
             Y = RobotMap.autoY;
         } else {
             X = xbox.getX();
-            Y = -xbox.getZ();//-xbox.getRawAxis(5);
+            System.out.println("X = " + X);
+            Y = -xbox.getZ(); //-xbox.getRawAxis(5);
+            System.out.println("Y = " + Y);
             if (Math.abs(X) < 0.1) X = 0;
             if (Math.abs(Y) < 0.1) Y = 0;
             X = X*Math.abs(X);

@@ -21,7 +21,7 @@ public class RightDriveSubsystem extends PIDSubsystem {
     public CANJaguar rightBack;
     
     public RightDriveSubsystem() {
-        super("Right Drive",0.00,0.0,0,0.030);
+        super("Right Drive", 0.01, 0, 0, 0.02);
         this.rightFront = RobotMap.rightFront;
         this.rightBack = RobotMap.rightBack;
         this.enable();
