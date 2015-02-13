@@ -66,6 +66,10 @@ public class Robot extends IterativeRobot {
 //            RobotMap.lowerClaw.enableControl();
 
         // FIXME Figure out the replacement.
+        RobotMap.leftFront.setSpeedMode(CANJaguar.kQuadEncoder, 1, 1, 1, 1);
+        RobotMap.rightFront.setSpeedMode(CANJaguar.kQuadEncoder, 1, 1, 1, 1);
+        RobotMap.leftFront.setPositionMode(CANJaguar.kQuadEncoder, 1,1, 1, 1);
+        RobotMap.rightFront.setPositionMode(CANJaguar.kQuadEncoder, 1,1, 1, 1);
 //        RobotMap.leftFront.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
 //        RobotMap.rightFront.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
 //        RobotMap.leftFront.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
