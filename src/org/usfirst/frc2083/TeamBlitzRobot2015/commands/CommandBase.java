@@ -16,6 +16,8 @@ public abstract class CommandBase extends Command {
     
     public static LeftDriveSubsystem leftDrive = new LeftDriveSubsystem();
     public static RightDriveSubsystem rightDrive = new RightDriveSubsystem();
+    public static GripperSubsystem gripper = new GripperSubsystem();
+    public static FourBarSubsystem fourBar = new FourBarSubsystem();
         
     public static OI oi;
     // Create a single static instance of all of your subsystems

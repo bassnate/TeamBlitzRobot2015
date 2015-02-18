@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.CANJaguar.ControlMode;
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -36,9 +37,10 @@ import org.usfirst.frc2083.TeamBlitzRobot2015.subsystems.*;
 public class Robot extends IterativeRobot {
 
     DriveCommand driveCommand;
+    GripperCommand gripperCommand;
+    FourBarCommand fourBarCommand;
 //    ClawCommand clawCommand;
 //    ShootCommand shootCommand;
-    double shootTimer = -1;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -46,20 +48,50 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 
-        RobotMap.leftFront = new CANJaguar(RobotMap.leftForwardMotor);
-        RobotMap.leftBack = new CANJaguar(RobotMap.leftBackMotor);
-        RobotMap.rightFront = new CANJaguar(RobotMap.rightForwardMotor);
-        RobotMap.rightBack = new CANJaguar(RobotMap.rightBackMotor);
-        RobotMap.leftFront.configNeutralMode(CANJaguar.NeutralMode.Brake);
-        RobotMap.leftBack.configNeutralMode(CANJaguar.NeutralMode.Brake);
-        RobotMap.rightFront.configNeutralMode(CANJaguar.NeutralMode.Brake);
-        RobotMap.rightBack.configNeutralMode(CANJaguar.NeutralMode.Brake);
+        RobotMap.leftForwardMotorController = new CANJaguar(RobotMap.leftForwardMotorControllerID);
+        RobotMap.leftBackMotorController = new CANJaguar(RobotMap.leftBackMotorControllerID);
+        RobotMap.rightForwardMotorController = new CANJaguar(RobotMap.rightForwardMotorControllerID);
+        RobotMap.rightBackMotorController = new CANJaguar(RobotMap.rightBackMotorControllerID);
+        RobotMap.leftForwardMotorController.configNeutralMode(CANJaguar.NeutralMode.Brake);
+        RobotMap.leftBackMotorController.configNeutralMode(CANJaguar.NeutralMode.Brake);
+        RobotMap.rightForwardMotorController.configNeutralMode(CANJaguar.NeutralMode.Brake);
+        RobotMap.rightBackMotorController.configNeutralMode(CANJaguar.NeutralMode.Brake);
         
-        RobotMap.rightBack.setVoltageMode();
-        RobotMap.leftBack.setVoltageMode();
+        RobotMap.rightBackMotorController.setVoltageMode();
+        RobotMap.leftBackMotorController.setVoltageMode();
         
-        RobotMap.leftFront.setVoltageMode(CANJaguar.kQuadEncoder, 360);
-        RobotMap.rightFront.setVoltageMode(CANJaguar.kQuadEncoder, 250);
+        RobotMap.leftForwardMotorController.setVoltageMode(CANJaguar.kQuadEncoder, 360);
+        RobotMap.rightForwardMotorController.setVoltageMode(CANJaguar.kQuadEncoder, 250);
+        
+        RobotMap.gripperLeftMotorController = new CANJaguar(RobotMap.gripperLeftMotorControllerID);
+        RobotMap.gripperRightMotorController = new CANJaguar(RobotMap.gripperRightMotorControllerID);
+        RobotMap.gripperLeftMotorController.configNeutralMode(CANJaguar.NeutralMode.Brake);
+        RobotMap.gripperRightMotorController.configNeutralMode(CANJaguar.NeutralMode.Brake);
+        RobotMap.gripperLeftMotorController.configLimitMode(CANJaguar.LimitMode.SwitchInputsOnly);
+        RobotMap.gripperRightMotorController.configLimitMode(CANJaguar.LimitMode.SwitchInputsOnly);
+        
+        RobotMap.gripperLeftMotorController.setVoltageMode();
+        RobotMap.gripperRightMotorController.setVoltageMode();
+        
+        RobotMap.fourBarMotorController = new CANTalon(RobotMap.fourBarMotorControllerID);
+        RobotMap.fourBarMotorController.changeControlMode(CANTalon.ControlMode.PercentVbus);
+        
+        RobotMap.fourBarMotorController.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
+        RobotMap.fourBarMotorController.enableBrakeMode(true);
+        RobotMap.fourBarMotorController.setForwardSoftLimit(756);
+        RobotMap.fourBarMotorController.enableForwardSoftLimit(true);
+        RobotMap.fourBarMotorController.setReverseSoftLimit(8);
+        RobotMap.fourBarMotorController.enableReverseSoftLimit(true);
+//        double p = 1;
+//        double i = .01;
+//        double d = 0;
+//        double f = 0;
+//        int izone = 0;
+//        double closeLoopRampRate = 10;
+//        int profile = 0;
+        //RobotMap.fourBarMotorController.setPID(p , i , d, f, izone, closeLoopRampRate, profile);
+       // RobotMap.fourBarMotorController.reverseSensor(false);
+        
         
 //        RobotMap.leftFront.setPositionMode(CANJaguar.kQuadEncoder, 360, 0.01, 0, 0);
 //        RobotMap.rightFront.setPositionMode(CANJaguar.kQuadEncoder, 250, 0.01, 0, 0);
@@ -79,8 +111,12 @@ public class Robot extends IterativeRobot {
         // Initialize all subsystems
         CommandBase.init();
         driveCommand = new DriveCommand();
+        gripperCommand = new GripperCommand();
+        fourBarCommand = new FourBarCommand();
 //            clawCommand = new ClawCommand();
         DriveCommand.xbox = new Joystick(0);
+        GripperCommand.xbox = DriveCommand.xbox;
+        FourBarCommand.xbox = DriveCommand.xbox;
 //            ClawCommand.xbox = DriveCommand.xbox;
 //            shootCommand = new ShootCommand();
 //            ShootCommand.xbox = DriveCommand.xbox;
@@ -88,87 +124,49 @@ public class Robot extends IterativeRobot {
        
         
 //            clawCommand.disableControl();
-        driveCommand.disableControl();            
+        driveCommand.disableControl();
+        gripperCommand.disableControl();
+        fourBarCommand.disableControl();
     }
 
     public void autonomousInit() {
-        RobotMap.auto = true;
-        RobotMap.autoTimer = System.currentTimeMillis()+500;
-        driveCommand.enableControl();
-        driveCommand.start();
-//        clawCommand.enableControl();
-//        clawCommand.start();
-//        shootCommand.start();
+    	RobotMap.auto = true;
+    	RobotMap.autoTimer = System.currentTimeMillis();
+    	driveCommand.enableControl();
+    	driveCommand.start();
+    	//System.out.println("ran Autonomous init");
     }
 
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        if (!RobotMap.auto) return;
-        // Start closing claw
-        if (System.currentTimeMillis()-RobotMap.autoTimer > 000) {
-            RobotMap.autoClose = true;
-            RobotMap.autoOpen = false;
-        }
-        // Start driving forward
-        if (System.currentTimeMillis()-RobotMap.autoTimer > 1500) {
-            RobotMap.autoY = 0.40;
-        }
-        // Raise bottom claw
-        if (System.currentTimeMillis()-RobotMap.autoTimer > 2000) {
-            RobotMap.autoUp = true;
-            RobotMap.autoDown = false;
-        }
-        // Open the claw
-        if (System.currentTimeMillis()-RobotMap.autoTimer > 3500) {
-            RobotMap.autoClose = false;
-            RobotMap.autoOpen = true;
-        }
-        // Stop opening
-        if (System.currentTimeMillis()-RobotMap.autoTimer > 4000) {
-            RobotMap.autoOpen = false;
-        }
-        /*try {
-            // Shoot
-            System.out.println(RobotMap.leftFront.getPosition()-RobotMap.leftOffset);
-            if (Math.abs(RobotMap.leftFront.getPosition()-RobotMap.leftOffset) >= 8.5 && shootTimer == -1) {
-                RobotMap.autoShoot = true;
-                shootTimer = System.currentTimeMillis();
-                RobotMap.autoY = 0;
-            }
-        } catch (CANTimeoutException ex) {
-            ex.printStackTrace();
-        }*/
-        if (System.currentTimeMillis()-RobotMap.autoTimer > 5000 && shootTimer ==-1) {
-//            RobotMap.autoShoot = true;
-//            shootTimer = System.currentTimeMillis();
-            RobotMap.autoY = 0;
-        }
-        if (shootTimer != -1 && System.currentTimeMillis()-shootTimer > 500) {
-//            RobotMap.autoShoot = false;
-            RobotMap.auto = false;
-            RobotMap.autoTimer = -1;
-        }
-        Scheduler.getInstance().run();
+    	if(System.currentTimeMillis()-RobotMap.autoTimer < 2500 ){
+    		RobotMap.autoY = 0.5;
+//    		System.out.println("autoY = .5, System Time millis = " 
+//    				+ System.currentTimeMillis() + 
+//    				", autoTimer = " + RobotMap.autoTimer);
+    	} else {
+    		RobotMap.autoY = 0;
+    	} 
+    	Scheduler.getInstance().run();
     }
 
     public void teleopInit() {
-        RobotMap.auto = false;
+    	RobotMap.auto = false;
         System.out.println("TELEOP INIT");
         driveCommand.enableControl();
         driveCommand.start();
-//        clawCommand.enableControl();
-//        clawCommand.start();
-//        shootCommand.start();
+        gripperCommand.enableControl();
+        gripperCommand.start();
+        fourBarCommand.enableControl();
+        fourBarCommand.start();
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        RobotMap.auto = false;
-//        RobotMap.autoShoot = false;
         Scheduler.getInstance().run();
     }
     
