@@ -36,6 +36,8 @@ public class RobotMap {
     public static boolean auto;
     public static double autoY = 0;
     public static double autoTimer = -1;
+    public static double autoDriveTime = 0;
+    public static int autoDistSelectChannel = 5;
     
 
     public static int downButton = 4;
