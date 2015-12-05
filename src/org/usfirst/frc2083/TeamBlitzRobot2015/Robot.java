@@ -138,7 +138,7 @@ public class Robot extends IterativeRobot {
     	RobotMap.auto = true;
     	RobotMap.autoTimer = System.currentTimeMillis();
     	if (autoDistSelect.get()) {
-    		RobotMap.autoDriveTime = 2750;// if jumper is unplugged
+    		RobotMap.autoDriveTime = 0; // if jumper is unplugged
     	} else {
     		RobotMap.autoDriveTime = 1500; // if jumper is plugged in
     	}

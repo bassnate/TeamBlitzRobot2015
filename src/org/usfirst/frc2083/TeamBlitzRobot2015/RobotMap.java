@@ -51,8 +51,8 @@ public class RobotMap {
     public static final int gripperLeftMotorControllerID = 5;
     public static final int gripperRightMotorControllerID = 2;
     public static final int fourBarMotorControllerID = 3;
-    public static final double gripperMotorVoltageLimit = 8.0;
-    public static final double gripperMotorCurrentLimit = 10.0;
+    public static final double gripperMotorVoltageLimit = 9.0;
+    public static final double gripperMotorCurrentLimit = 15.0;
     public static final int xboxLeftTriggerAxisNum = 2; 
     public static final int xboxRightTriggerAxisNum = 3; 
 

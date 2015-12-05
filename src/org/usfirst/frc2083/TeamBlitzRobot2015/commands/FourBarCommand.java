@@ -42,7 +42,7 @@ public class  FourBarCommand extends CommandBase {
 		rY = -xbox.getRawAxis(5);
 		double Y = rY; 		
 		if (Math.abs(Y) < 0.1) Y = 0;
-		Y = Y*Math.abs(Y);
+		Y = Y*Math.abs(Y)*.5;
 		//position += 2 * Y;
 		double curpos = fourBar.getController().getAnalogInPosition();
 		//System.out.println("Y = " + Y + ", rY = " + rY + ", curpos = " + curpos);
