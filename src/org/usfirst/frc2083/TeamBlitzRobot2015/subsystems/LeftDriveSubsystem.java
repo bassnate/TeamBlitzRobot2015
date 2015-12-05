@@ -17,11 +17,11 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
  */
 public class LeftDriveSubsystem extends PIDSubsystem {
     
-    CANJaguar leftFront = RobotMap.leftFront;
-    CANJaguar leftBack = RobotMap.leftBack;
+    CANJaguar leftFront = RobotMap.leftForwardMotorController;
+    CANJaguar leftBack = RobotMap.leftBackMotorController;
     
     public LeftDriveSubsystem() {
-        super("Left Drive",0.00,0.0,0,0.030);
+        super("Left Drive", 0.01, 0.0, 0.0, 0.02);
         this.enable();
         this.getPIDController().setOutputRange(-12, 12);
     }
@@ -42,9 +42,9 @@ public class LeftDriveSubsystem extends PIDSubsystem {
     }
 
     public void usePIDOutput(double d) {
-        System.out.println("Left " + getSetpoint() + " " + returnPIDInput() + " " + d + " " + leftFront.getOutputCurrent() + " " + leftBack.getOutputCurrent());
-        leftBack.set(-d);
+//        System.out.println("Left " + getSetpoint() + " " + returnPIDInput() + " " + d + " " + leftFront.getOutputCurrent() + " " + leftBack.getOutputCurrent());
         leftFront.set(-d);
+        leftBack.set(-d);
     }
     
 }
